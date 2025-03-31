@@ -20,14 +20,20 @@ export const Container = styled.div`
   @media ${(props) => props.theme.breakpoints.sm} {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(2, 60px);
+    grid-template-rows: 1fr;
     grid-column-gap: 0.5rem;
-    grid-row-gap: 0.5rem;
+    padding: 0.5rem;
+    padding-top: 1rem;
   }
 `;
+
 export const Span = styled.span`
   font-size: 2rem;
+  @media ${(props) => props.theme.breakpoints.sm} {
+    font-size: 1.6rem;
+  }
 `;
+
 export const Div1 = styled.div`
   grid-area: 1 / 1 / 2 / 2;
   display: flex;
@@ -37,22 +43,25 @@ export const Div1 = styled.div`
     grid-area: 1 / 1 / 2 / 3;
   }
 `;
+
 export const Div2 = styled.div`
   grid-area: 1 / 2 / 2 / 4;
   display: flex;
   justify-content: space-around;
   @media ${(props) => props.theme.breakpoints.sm} {
-    grid-area: 2 / 2 / 3 / 5;
+    display: none;
   }
 `;
+
 export const Div3 = styled.div`
   grid-area: 1 / 5 / 2 / 6;
   display: flex;
   justify-content: space-around;
   align-items: center;
   @media ${(props) => props.theme.breakpoints.sm} {
-    align-items: center;
-    grid-area: 1 / 4 / 2 / 6;
+    grid-area: 1 / 3 / 2 / 6;
+    justify-content: flex-end;
+    gap: 0.5rem;
   }
 `;
 
@@ -67,8 +76,47 @@ export const NavLink = styled.a`
     opacity: 1;
     cursor: pointer;
   }
+`;
+
+// Mobile Menu Button
+export const MobileMenuButton = styled.button`
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
   @media ${(props) => props.theme.breakpoints.sm} {
-    padding: 0.5rem;
+    display: block;
+  }
+`;
+
+// Mobile Menu
+export const MobileMenu = styled.div`
+  display: none;
+  @media ${(props) => props.theme.breakpoints.sm} {
+    display: ${({ isOpen }) => (isOpen ? "flex" : "none")};
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(15, 22, 36, 0.98);
+    padding: 1rem;
+    gap: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+`;
+
+export const MobileNavLink = styled.a`
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.6rem;
+  padding: 0.8rem 1rem;
+  transition: 0.3s ease;
+  &:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
   }
 `;
 
@@ -129,5 +177,12 @@ export const SocialIcons = styled.a`
     background-color: #212d45;
     transform: scale(1.2);
     cursor: pointer;
+  }
+  @media ${(props) => props.theme.breakpoints.sm} {
+    padding: 4px;
+    svg {
+      width: 24px;
+      height: 24px;
+    }
   }
 `;

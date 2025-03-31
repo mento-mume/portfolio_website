@@ -1,13 +1,26 @@
 import styled from "styled-components";
 
 export const ContactContainer = styled.div`
-  max-width: 600px;
+  width: 100%;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 3rem;
   background: rgba(255, 255, 255, 0.05);
   border-radius: 15px;
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+
+  @media ${(props) => props.theme.breakpoints.md} {
+    max-width: 700px;
+    padding: 2.5rem;
+  }
+
+  @media ${(props) => props.theme.breakpoints.sm} {
+    width: calc(100% - 3rem);
+    max-width: 100%;
+    padding: 2rem;
+    margin: 0 auto;
+  }
 `;
 
 export const ContactForm = styled.form`

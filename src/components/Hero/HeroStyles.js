@@ -17,7 +17,7 @@ export const LeftSection = styled.div`
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 0 auto;
+    margin: 8rem auto 0;
   }
   @media ${(props) => props.theme.breakpoints.md} {
     width: 100%;
@@ -26,6 +26,6 @@ export const LeftSection = styled.div`
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 0 auto;
+    margin: 10rem auto 0;
   }
 `;
