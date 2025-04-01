@@ -109,3 +109,17 @@ export const SubmitButton = styled.button`
     font-size: 1.4rem;
   }
 `;
+export const FormMessage = styled.div`
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  font-size: 1.6rem;
+  font-weight: 500;
+  text-align: center;
+  background: ${(props) =>
+    props.error ? "rgba(255, 0, 0, 0.1)" : "rgba(0, 255, 0, 0.1)"};
+  color: ${(props) => (props.error ? "#ff6b6b" : "#69db7c")};
+  border: 1px solid
+    ${(props) =>
+      props.error ? "rgba(255, 0, 0, 0.3)" : "rgba(0, 255, 0, 0.3)"};
+`;

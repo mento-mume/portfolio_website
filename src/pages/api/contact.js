@@ -20,7 +20,7 @@ export default async function handler(req, res) {
     const transporter = nodemailer.createTransport({
       host: process.env.EMAIL_SERVER,
       port: process.env.EMAIL_PORT,
-      secure: process.env.EMAIL_SECURE === "true",
+      secure: process.env.EMAIL_SECURE,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASSWORD,

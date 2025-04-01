@@ -61,9 +61,9 @@ const Header = () => {
           </Link>
         </li>
         <li>
-          <a href="/resume.pdf" download>
-            <NavLink>Resume</NavLink>
-          </a>
+          <NavLink href="/resume.pdf" download>
+            Resume
+          </NavLink>
         </li>
       </Div2>
       <Div3>
