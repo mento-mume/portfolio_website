@@ -1,114 +1,3 @@
-// import React, { useState } from "react";
-// import {
-//   Section,
-//   SectionDivider,
-//   SectionTitle,
-// } from "../../styles/GlobalComponents";
-// import {
-//   ContactContainer,
-//   ContactForm,
-//   FormGroup,
-//   Label,
-//   Input,
-//   TextArea,
-//   SubmitButton,
-// } from "./ContactStyles";
-
-// const Contact = () => {
-//   const [formData, setFormData] = useState({
-//     name: "",
-//     email: "",
-//     subject: "",
-//     message: "",
-//     phone: "",
-//   });
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({
-//       ...prev,
-//       [name]: value,
-//     }));
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     // Handle form submission here
-//     console.log(formData);
-//   };
-
-//   return (
-//     <Section id="contact">
-//       <SectionDivider />
-//       <SectionTitle main>Contact Me</SectionTitle>
-//       <ContactContainer>
-//         <ContactForm onSubmit={handleSubmit}>
-//           <FormGroup>
-//             <Label htmlFor="name">Name *</Label>
-//             <Input
-//               type="text"
-//               id="name"
-//               name="name"
-//               value={formData.name}
-//               onChange={handleChange}
-//               required
-//             />
-//           </FormGroup>
-
-//           <FormGroup>
-//             <Label htmlFor="email">Email Address *</Label>
-//             <Input
-//               type="email"
-//               id="email"
-//               name="email"
-//               value={formData.email}
-//               onChange={handleChange}
-//               required
-//             />
-//           </FormGroup>
-
-//           <FormGroup>
-//             <Label htmlFor="phone">Phone Number (Optional)</Label>
-//             <Input
-//               type="tel"
-//               id="phone"
-//               name="phone"
-//               value={formData.phone}
-//               onChange={handleChange}
-//             />
-//           </FormGroup>
-
-//           <FormGroup>
-//             <Label htmlFor="subject">Subject *</Label>
-//             <Input
-//               type="text"
-//               id="subject"
-//               name="subject"
-//               value={formData.subject}
-//               onChange={handleChange}
-//               required
-//             />
-//           </FormGroup>
-
-//           <FormGroup>
-//             <Label htmlFor="message">Message *</Label>
-//             <TextArea
-//               id="message"
-//               name="message"
-//               value={formData.message}
-//               onChange={handleChange}
-//               required
-//             />
-//           </FormGroup>
-
-//           <SubmitButton type="submit">Send Message</SubmitButton>
-//         </ContactForm>
-//       </ContactContainer>
-//     </Section>
-//   );
-// };
-
-// export default Contact;
 import React, { useState } from "react";
 import {
   Section,
@@ -135,11 +24,11 @@ const Contact = () => {
     phone: "",
   });
 
-  const [status, setStatus] = useState({
-    submitted: false,
-    submitting: false,
-    info: { error: false, msg: null },
+  const [submissionStatus, setSubmissionStatus] = useState({
+    isSubmitted: false,
+    isLoading: false,
   });
+  const [error, setError] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -151,7 +40,8 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setStatus((prevStatus) => ({ ...prevStatus, submitting: true }));
+    setSubmissionStatus({ isSubmitted: false, isLoading: true });
+    setError(null);
 
     try {
       const response = await fetch("/api/contact", {
@@ -165,11 +55,7 @@ const Contact = () => {
       const data = await response.json();
 
       if (response.ok) {
-        setStatus({
-          submitted: true,
-          submitting: false,
-          info: { error: false, msg: data.message },
-        });
+        setSubmissionStatus({ isSubmitted: true, isLoading: false });
         setFormData({
           name: "",
           email: "",
@@ -178,21 +64,12 @@ const Contact = () => {
           phone: "",
         });
       } else {
-        setStatus({
-          submitted: false,
-          submitting: false,
-          info: { error: true, msg: data.message },
-        });
+        setSubmissionStatus({ isSubmitted: false, isLoading: false });
+        setError(data.message);
       }
     } catch (error) {
-      setStatus({
-        submitted: false,
-        submitting: false,
-        info: {
-          error: true,
-          msg: "An error occurred. Please try again later.",
-        },
-      });
+      setSubmissionStatus({ isSubmitted: false, isLoading: false });
+      setError("An error occurred. Please try again later.");
     }
   };
 
@@ -202,9 +79,11 @@ const Contact = () => {
       <SectionTitle main>Contact Me</SectionTitle>
       <ContactContainer>
         <ContactForm onSubmit={handleSubmit}>
-          {status.info.msg && (
-            <FormMessage error={status.info.error}>
-              {status.info.msg}
+          {error && <FormMessage error={true}>{error}</FormMessage>}
+
+          {submissionStatus.isSubmitted && (
+            <FormMessage error={false}>
+              Your message has been sent successfully!
             </FormMessage>
           )}
 
@@ -217,7 +96,7 @@ const Contact = () => {
               value={formData.name}
               onChange={handleChange}
               required
-              disabled={status.submitting}
+              disabled={submissionStatus.isLoading}
             />
           </FormGroup>
 
@@ -230,7 +109,7 @@ const Contact = () => {
               value={formData.email}
               onChange={handleChange}
               required
-              disabled={status.submitting}
+              disabled={submissionStatus.isLoading}
             />
           </FormGroup>
 
@@ -242,7 +121,7 @@ const Contact = () => {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              disabled={status.submitting}
+              disabled={submissionStatus.isLoading}
             />
           </FormGroup>
 
@@ -255,7 +134,7 @@ const Contact = () => {
               value={formData.subject}
               onChange={handleChange}
               required
-              disabled={status.submitting}
+              disabled={submissionStatus.isLoading}
             />
           </FormGroup>
 
@@ -267,12 +146,12 @@ const Contact = () => {
               value={formData.message}
               onChange={handleChange}
               required
-              disabled={status.submitting}
+              disabled={submissionStatus.isLoading}
             />
           </FormGroup>
 
-          <SubmitButton type="submit" disabled={status.submitting}>
-            {status.submitting ? "Sending..." : "Send Message"}
+          <SubmitButton type="submit" disabled={submissionStatus.isLoading}>
+            {submissionStatus.isLoading ? "Sending..." : "Send Message"}
           </SubmitButton>
         </ContactForm>
       </ContactContainer>
